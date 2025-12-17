@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const connectionDB = require("./src/config/dbConnect");
 const authrouter = require("./src/routes/authRoutes");
-const productrouter = require("./src/routes/blogRoutes");
+const blogRoutes = require("./src/routes/blogRoutes");
 const cors = require("cors");
 
 require("dotenv").config();
@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", authrouter);
-app.use("/api/product", productrouter);
+app.use("/api/product", blogRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
