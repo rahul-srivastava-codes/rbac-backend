@@ -1,6 +1,6 @@
 const express = require("express");
-const auth = require("../middlewares/authMiddleware");
-const role = require("../middlewares/roleMiddleware");
+const auth = require("../middlewares/auth");
+const role = require("../middlewares/role");
 
 const {
   create_blog,

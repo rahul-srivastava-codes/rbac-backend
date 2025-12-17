@@ -1,11 +1,11 @@
 const user = require("../models/userModel");
-const Blog= require ("..models/blogModel");
+const Blog= require ("../models/blogModel");
 const http = require("../models/httpStatus");
 
 const slugify = require("../utils/slugify");
 const seoMeta = require("../utils/seoMeta");
 
-exports.createBlog = async (req, res) => {
+const create_blog = async (req, res) => {
   try {
     const { title, content } = req.body;
 
@@ -44,15 +44,15 @@ exports.createBlog = async (req, res) => {
 };
 
 
-const delete_product = async (req, res) => {
+const delete_blog = async (req, res) => {
   
 };
 
-const edit_product = async (req, res) => {
+const edit_blog = async (req, res) => {
   
 };
 
-const show_product = async (req, res) => {
+const show_blog = async (req, res) => {
   
 };
-module.exports = { add_product, delete_product, edit_product, show_product };
+module.exports = { create_blog, delete_blog, edit_blog, show_blog };
