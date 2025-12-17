@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
-const connectionDB = require("./config/dbConnect");
-const authrouter = require("./routes/authRoutes");
-const productrouter = require("./routes/productRoutes");
+const connectionDB = require("./src/config/dbConnect");
+const authrouter = require("./src/routes/authRoutes");
+const productrouter = require("./src/routes/blogRoutes");
 const cors = require("cors");
 
 require("dotenv").config();
@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authrouter);
 app.use("/api/product", productrouter);
 
-app.listen(port, async () => {
-  console.log(`Example app listening on port ${port}`);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
+

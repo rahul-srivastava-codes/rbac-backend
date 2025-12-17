@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const user = require("../models/");
+const user = require("../models/userModel");
+const blog= require ("..models/blogModel");
 const http = require("../models/httpStatus");
 
-const add_product = async (req, res) => {
+const create_blog = async (req, res) => {
   try {
     const { name, role, email, password } = req.body;
 

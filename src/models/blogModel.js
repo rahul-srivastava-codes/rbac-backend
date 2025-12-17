@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const productSchema = new Schema(
+const blogSchema = new Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
       trim: true,
     },
-
-    description: {
+    slug: {
       type: String,
       required: true,
       trim: true,
@@ -18,28 +17,23 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    category: {
+    content: {
       type: String,
       required: true,
       trim: true,
     },
 
-    price: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-    stock: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-    status: {
+    metaTitle: {
       type: String,
-      enum: ["PENDING", "ACTIVE", "BLOCKED"],
-      default: "PENDING",
+      required: true,
+      min: 0,
     },
-    seller: {
+    metaDescription: {
+      type: String,
+      required: true,
+      min: 0,
+    },
+    author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -48,4 +42,4 @@ const productSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Product", productSchema);
+module.exports = mongoose.model("blog", blogschema);
