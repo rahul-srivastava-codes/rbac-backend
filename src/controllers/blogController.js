@@ -1,102 +1,58 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 const user = require("../models/userModel");
-const blog= require ("..models/blogModel");
+const Blog= require ("..models/blogModel");
 const http = require("../models/httpStatus");
 
-const create_blog = async (req, res) => {
+const slugify = require("../utils/slugify");
+const seoMeta = require("../utils/seoMeta");
+
+exports.createBlog = async (req, res) => {
   try {
-    const { name, role, email, password } = req.body;
+    const { title, content } = req.body;
 
-    if (!name || !email || !password || !role) {
-      return res
-        .status(http.BAD_REQUEST)
-        .json({ message: "All fields are required", success: false });
+    if (!title || !content) {
+      return res.status(http.BAD_REQUEST).json({ message: "Title and content are required" });
     }
-    const existingUser = await user.findOne({ email });
-    if (existingUser)
-      return res
-        .status(http.BAD_REQUEST)
-        .json({ message: "Email already exists", success: false });
 
-    const hashedpassword = await bcrypt.hash(
-      String(password),
-      Number(process.env.salt)
-    );
+    if (!req.file) {
+      return res.status(http.BAD_REQUEST).json({ message: "Blog image is required" });
+    }
 
-    await user.create({
-      name,
-      role,
-      email,
-      password: hashedpassword,
+    const { metaTitle, metaDescription } = seoMeta(title, content);
+
+    const blog = await Blog.create({
+      title,
+      content,
+      image: req.file.path,
+      slug: slugify(title),
+      metaTitle,
+      metaDescription,
+      author: req.user.id,
     });
 
-    return res.status(http.OK).json({
+    res.status(http.CREATED).json({
       success: true,
-      message: "Account created successfully: " + name,
+      message: "Blog created successfully",
+      data: blog,
     });
+
   } catch (error) {
-    return res.status(http.BAD_REQUEST).json({
+    res.status(http.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: "Something is wrong",
+      message: error.message,
     });
   }
 };
 
+
 const delete_product = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const User = await user.findOne({ email });
-    if (!User) {
-      return res.status(400).json({
-        message: "Incorrect email or password",
-        success: false,
-      });
-    }
-
-    const isMatch = await bcrypt.compare(password, User.password);
-    if (!isMatch) {
-      return res.status(400).json({
-        message: "Incorrect email or password",
-        success: false,
-      });
-    }
-
-    const token = jwt.sign(
-      { id: User._id, role: User.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
-
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
-      token,
-      user: {
-        id: User._id,
-        name: User.name,
-        email: User.email,
-        role: User.role,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: "Server error",
-      success: false,
-    });
-  }
+  
 };
 
 const edit_product = async (req, res) => {
-  res
-    .cookie("token", "", { maxAge: 0 })
-    .json({ message: "Logout successful", success: true });
+  
 };
+
 const show_product = async (req, res) => {
-  res
-    .cookie("token", "", { maxAge: 0 })
-    .json({ message: "Logout successful", success: true });
+  
 };
 module.exports = { add_product, delete_product, edit_product, show_product };
