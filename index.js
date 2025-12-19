@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const connectionDB = require("./src/config/dbConnect");
-const authrouter = require("./src/routes/authRoutes");
+const authRoutes = require("./src/routes/authRoutes");
 const blogRoutes = require("./src/routes/blogRoutes");
 const cors = require("cors");
 
@@ -16,8 +16,8 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.use("/auth", authrouter);
-app.use("/api/product", blogRoutes);
+app.use("/auth", authRoutes);
+app.use("/api/blog", blogRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

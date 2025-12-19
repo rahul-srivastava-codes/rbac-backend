@@ -10,7 +10,9 @@ const {
 } = require("../controllers/blogController");
 const router = express.Router();
 
+
 router.get("/", show_blog);
+router.get("/:slug", show_blog);
 
 router.post("/", auth , role("admin", "manager") , create_blog);
 
